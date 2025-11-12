@@ -1,0 +1,25 @@
+{
+  "name": "devtinder-backend",
+  "version": "1.0.0",
+  "description": "Backend for a devtinder like app to make connections with fellow developers",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "backend",
+    "expressjs"
+  ],
+  "author": "Pratyush Sharma",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.2",
+    "validator": "^13.15.15"
+  }
+}

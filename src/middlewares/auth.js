@@ -1,0 +1,23 @@
+const User=require("../models/user");
+const jwt=require("jsonwebtoken");
+
+const userAuth=async (req, res, next)=>{
+    try{
+        const token=req.cookies.token;
+        if(!token){
+            throw new Error("token not found");
+        }
+        const decodedMsg=jwt.verify(token, "lawdeKaSecret");
+        const _id=decodedMsg._id;
+        const user=await User.findById(_id);
+        if(!user){
+            throw new Error("user not found, login again");
+        }
+        req.user=user;
+        next();
+    }catch(err){
+        res.status(400).send("ERROR: "+err.message)
+    }
+}
+
+module.exports={userAuth};
