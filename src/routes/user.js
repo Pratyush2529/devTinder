@@ -1,12 +1,13 @@
 const express=require("express");
 const userRouter=express.Router();
 const {userAuth}=require("../middlewares/auth");
-const connectionRequest=require("../models/connectionRequest");
+const ConnectionRequest=require("../models/connectionRequest");
+const User = require("../models/user");
 
 userRouter.get("/user/requests", userAuth, async (req, res)=>{
     try{
         const user=req.user;
-        const pendingConnectionRequests=await connectionRequest.find({
+        const pendingConnectionRequests=await ConnectionRequest.find({
             recieverId:user._id,
             status:"interested"
         }).populate("senderId", ["firstName", "lastName"]);
@@ -22,7 +23,7 @@ userRouter.get("/user/requests", userAuth, async (req, res)=>{
 userRouter.get("/user/connections", userAuth, async(req, res)=>{
     try{
         const user=req.user;
-        const connections=await connectionRequest.find({
+        const connections=await ConnectionRequest.find({
             $or:[
                 {senderId:user._id, status:"accepted"},
                 {recieverId:user._id, status:"accepted"},
@@ -42,5 +43,27 @@ userRouter.get("/user/connections", userAuth, async(req, res)=>{
     }catch(err){
         res.status(400).send("ERROR: "+err.message)
     }
+})
+
+userRouter.get("/user/feed", userAuth, async(req, res)=>{
+    const loggedInUser=req.user;
+    const connections=await ConnectionRequest.find({
+        $or:[
+            {senderId:loggedInUser._id},
+            {recieverId:loggedInUser._id}
+        ]
+    })
+    const hideUsersFromFeed=new Set();
+    connections.forEach((req)=>{
+        hideUsersFromFeed.add(req.senderId.toString());
+        hideUsersFromFeed.add(req.recieverId.toString())
+    })
+    const usersOnFeed=await User.find({
+        $and:[
+            {_id:{$nin:Array.from(hideUsersFromFeed)}},
+            {_id:{$ne:loggedInUser._id}}
+        ]
+    }).select(["firstName", "lastName", "photoUrl about skills"])
+    res.send(usersOnFeed);
 })
 module.exports=userRouter;
