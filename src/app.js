@@ -3,8 +3,9 @@ const connectDB=require("./config/databse");
 const app = express();
 const User=require("./models/user");
 const cookieParser=require("cookie-parser");
+const cors=require("cors")
 
-
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());    
 
