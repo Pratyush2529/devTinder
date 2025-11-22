@@ -31,7 +31,7 @@ authRouter.post("/login", async (req, res)=>{
         if(isPasswordValid){
             const token=jwt.sign({_id:user._id}, "lawdeKaSecret");
             res.cookie("token", token);
-            res.send("Login ho gya ji!!")
+            res.send(user)
     }
     else{
         res.status(400).send("invalid credentials");
