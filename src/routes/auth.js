@@ -29,7 +29,7 @@ authRouter.post("/login", async (req, res)=>{
         }
         const isPasswordValid=await bcrypt.compare(password, user.password);
         if(isPasswordValid){
-            const token=jwt.sign({_id:user._id}, "lawdeKaSecret");
+            const token=jwt.sign({_id:user._id}, process.env.JWT_SECRET);
             res.cookie("token", token);
             res.send(user)
     }

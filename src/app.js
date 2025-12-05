@@ -4,6 +4,8 @@ const app = express();
 const User=require("./models/user");
 const cookieParser=require("cookie-parser");
 const cors=require("cors")
+const dotenv=require("dotenv");
+dotenv.config();
 
 app.use(cors({
     origin:"http://localhost:5173",
