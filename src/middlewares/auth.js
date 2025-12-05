@@ -5,7 +5,7 @@ const userAuth=async (req, res, next)=>{
     try{
         const token=req.cookies.token;
         if(!token){
-            throw new Error("token not found");
+            return res.status(401).send("Please Login!");
         }
         const decodedMsg=jwt.verify(token, "lawdeKaSecret");
         const _id=decodedMsg._id;
