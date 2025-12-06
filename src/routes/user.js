@@ -67,7 +67,7 @@ userRouter.get("/user/feed", userAuth, async(req, res)=>{
             {_id:{$nin:Array.from(hideUsersFromFeed)}},
             {_id:{$ne:loggedInUser._id}}
         ]
-    }).select(["firstName", "lastName", "photoUrl about skills"]).skip(skip).limiy(limit);
+    }).select(["firstName", "lastName", "photoUrl", "about", "skills", "age", "gender"]).skip(skip).limit(limit);
     res.send(usersOnFeed);
 })
 module.exports=userRouter;

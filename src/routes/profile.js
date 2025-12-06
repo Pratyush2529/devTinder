@@ -23,7 +23,10 @@ profileRouter.patch("/profile/edit", userAuth, async(req, res)=>{
         }
         const user=req.user;
         const updatedUser=await User.findByIdAndUpdate(user._id, req.body, {new:true});
-        res.send(updatedUser);
+        res.send({
+            message:"profile updated successfully",
+            data:updatedUser
+        });
     }catch(err){
         res.status(400).send("ERROR : "+err.message);
     }
