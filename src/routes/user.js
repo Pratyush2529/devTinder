@@ -10,9 +10,10 @@ userRouter.get("/user/requests", userAuth, async (req, res)=>{
         const pendingConnectionRequests=await ConnectionRequest.find({
             recieverId:user._id,
             status:"interested"
-        }).populate("senderId", ["firstName", "lastName"]);
+        }).populate("senderId", ["firstName", "lastName", "age,", "gender", "photoUrl", "about", "skills"]);
         if(pendingConnectionRequests.length===0){
-            throw new Error("no requests found");
+            res.status(404).json({
+                message:"no requests found"});
         }
         res.send(pendingConnectionRequests);
     }catch(err){
@@ -28,7 +29,7 @@ userRouter.get("/user/connections", userAuth, async(req, res)=>{
                 {senderId:user._id, status:"accepted"},
                 {recieverId:user._id, status:"accepted"},
             ]
-        }).populate("senderId", ["firstName", "lastName"]).populate("recieverId", ["firstName", "lastName"]);
+        }).populate("senderId", ["firstName", "lastName", "age", "gender", "photoUrl", "about", "skills"]).populate("recieverId", ["firstName", "lastName", "age", "gender", "photoUrl", "about", "skills"]);
         if(connections.length===0){
             throw new Error("no connections found");
         }
