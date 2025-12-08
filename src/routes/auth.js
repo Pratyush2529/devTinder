@@ -14,7 +14,7 @@ authRouter.post("/signup", async (req, res)=>{
         firstName, lastName, emailId, password:passwordHash,
     });
         await user.save()
-        res.send("aa gya ji naya bakra")
+        res.send(user)
     }catch(err){
         res.status(400).send("ERROR: "+err.message)
     }
