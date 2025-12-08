@@ -13,8 +13,10 @@ authRouter.post("/signup", async (req, res)=>{
     const user=new User({
         firstName, lastName, emailId, password:passwordHash,
     });
-        await user.save()
-        res.send(user)
+        const savedUser=await user.save();
+        const token=jwt.sign({_id:user._id}, process.env.JWT_SECRET);
+            res.cookie("token", token);
+        res.json({message:"user created successfully", data:savedUser});
     }catch(err){
         res.status(400).send("ERROR: "+err.message)
     }
